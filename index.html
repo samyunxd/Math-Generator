@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Practice Game</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Prevent theme flash -->
+  <script>
+    // Immediately set the theme before the page loads
+    (function() {
+      const storageKey = 'theme-preference';
+      const getColorPreference = () => {
+        if (localStorage.getItem(storageKey))
+          return localStorage.getItem(storageKey);
+        else
+          return window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+      };
+      
+      const theme = getColorPreference();
+      document.firstElementChild.setAttribute('data-theme', theme);
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+        document.body?.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle" title="Toggles light & dark" aria-label="auto" aria-live="polite">
+    <svg class="sun-and-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+      <mask class="moon" id="moon-mask">
+        <rect x="0" y="0" width="100%" height="100%" fill="white" />
+        <circle cx="24" cy="10" r="6" fill="black" />
+      </mask>
+      <circle class="sun" cx="12" cy="12" r="6" mask="url(#moon-mask)" fill="currentColor" />
+      <g class="sun-beams" stroke="currentColor">
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </g>
+    </svg>
+  </button>
+  <div id="settings-panel" class="settings-panel" aria-label="Settings">
+    <form id="settings-form" autocomplete="off">
+      <div style="margin-bottom:0.7em;">
+        <label for="operation">Operation:</label><br>
+        <select id="operation" name="operation">
+          <option value="add">Addition</option>
+          <option value="sub">Subtraction</option>
+          <option value="mul">Multiplication</option>
+          <option value="div">Division</option>
+          <option value="mix">Mixed</option>
+        </select>
+      </div>
+      <div id="addends-row" style="margin-bottom:0.7em; display:none;">
+        <label for="num-addends">Number of addends:</label><br>
+        <input type="number" id="num-addends" name="num-addends" min="2" max="5" value="2" style="width:3em;">
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label for="num-questions">Questions:</label><br>
+        <input type="number" id="num-questions" name="num-questions" min="1" max="50" value="10" style="width:3.5em;">
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label>Range:</label><br>
+        <input type="number" id="min-range" name="min-range" min="-100" max="100" value="1" style="width:3em;"> to
+        <input type="number" id="max-range" name="max-range" min="-100" max="100" value="10" style="width:3em;">
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label><input type="checkbox" id="allow-negatives" name="allow-negatives"> Allow negatives (subtraction)</label>
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label>Division answers:</label><br>
+        <select id="div-answer-type" name="div-answer-type">
+          <option value="whole">Whole numbers</option>
+          <option value="decimal">Decimals</option>
+        </select>
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label><input type="checkbox" id="timed-mode" name="timed-mode"> Timed Mode</label>
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label><input type="checkbox" id="answer-input-toggle" name="answer-input-toggle"> Enable answer input box</label>
+      </div>
+      <div style="margin-bottom:0.7em;">
+        <label><input type="checkbox" id="sound-effects-toggle" name="sound-effects-toggle" checked> Sound Effects</label>
+      </div>
+    </form>
+  </div>
+  <main id="main-content">
+    <div id="status-container" style="min-height:5.5em; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;">
+      <!-- Timer, progress, and session messages will be placed here by script.js -->
+    </div>
+    <div id="streak-counter" style="min-height:2em; text-align:center; font-size:1.2rem; color:#fbbf24; font-weight:600;"></div>
+    <div id="equation" class="equation">?</div>
+    <div id="answer-input-row" style="display:none; text-align:center; margin-bottom:1em;"></div>
+    <div id="controls" class="controls">
+      <button id="generate-btn">Generate</button>
+      <button id="show-answer-btn" disabled>Show Answer</button>
+      <button id="end-session-btn" disabled>End Session</button>
+    </div>
+    <div id="answer" class="answer" style="display:none;"></div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html> 
